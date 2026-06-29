@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Airport {
-    private Runway Airport;
+    private Runway runway;
     private FuelTruck fuelTruck;
     private List<Gate> gates;
     public Airport () {
@@ -15,7 +15,7 @@ public class Airport {
             gates.add(new Gate(i));
         }
     }
-    public List<Gate> gatGates(){
+    public List<Gate> getGates(){
         return gates;
     }
     public Runway getRunway(){
