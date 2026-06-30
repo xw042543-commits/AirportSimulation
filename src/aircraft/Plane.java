@@ -1,15 +1,18 @@
 package aircraft;
 
 import airport.Gate;
+import atc.ATC;
 
 public class Plane extends Thread{
+    private final ATC atc;
     private final int planeId;
     private final int passengerCount;
     private Gate assignedGate;
 
-    public Plane(int planeId, int passengerCount) {
+    public Plane(int planeId, int passengerCount, ATC atc) {
         this.planeId = planeId;
         this.passengerCount  = passengerCount;
+        this.atc = atc;
     }
     public int getPlaneId(){
         return planeId;
@@ -28,5 +31,6 @@ public class Plane extends Thread{
     public void run(){
         System.out.println("Plane " + planeId + " arrived at the airport.");
         System.out.println("Plane " + planeId + " is requesting landing");
+        atc.requestLanding(this);
     }
 }
