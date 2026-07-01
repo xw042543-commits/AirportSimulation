@@ -32,5 +32,11 @@ public class Plane extends Thread{
         System.out.println("Plane " + planeId + " arrived at the airport.");
         System.out.println("Plane " + planeId + " is requesting landing");
         atc.requestLanding(this);
+    try {
+        Thread.sleep(3000);
+    } catch (InterruptedException e){
+        Thread.currentThread().interrupt();
+    }
+    atc.releaseRunway();
     }
 }

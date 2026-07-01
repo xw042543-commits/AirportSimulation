@@ -15,19 +15,23 @@ public class ATC {
         System.out.println("ATC received landing request from Plane "
                 + plane.getPlaneId());
 
-        if (runway.isAvailable()) {
+        while (!runway.isAvailable()){
 
-            System.out.println("ATC approved landing for Plane "
-                    + plane.getPlaneId());
-
-            runway.occupy(plane);
-
-        } else {
-
-            System.out.println("Runway is busy. Plane "
-                    + plane.getPlaneId()
-                    + " is waiting.");
-
+            System.out.println(
+                    "Runway is busy. Plane " + plane.getPlaneId() + " is waiting.");
+            try {
+                wait();
+            } catch (InterruptedException e){
+                Thread.currentThread().interrupt();
+                return;
+            }
         }
+        System.out.println("ATC approved landing for Plane" + plane.getPlaneId());
+
+        runway.occupy(plane);
+    }
+    public synchronized  void  releaseRunway(){
+        runway.release();
+        notifyAll();
     }
     }
