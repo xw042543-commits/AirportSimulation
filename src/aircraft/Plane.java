@@ -1,5 +1,6 @@
 package aircraft;
 
+import airport.Airport;
 import airport.Gate;
 import atc.ATC;
 
@@ -8,11 +9,13 @@ public class Plane extends Thread{
     private final int planeId;
     private final int passengerCount;
     private Gate assignedGate;
+    private final Airport airport;
 
-    public Plane(int planeId, int passengerCount, ATC atc) {
+    public Plane(int planeId, int passengerCount, ATC atc, Airport airport) {
         this.planeId = planeId;
         this.passengerCount  = passengerCount;
         this.atc = atc;
+        this.airport = airport;
     }
     public int getPlaneId(){
         return planeId;
@@ -38,5 +41,26 @@ public class Plane extends Thread{
         Thread.currentThread().interrupt();
     }
     atc.releaseRunway();
+        Gate gate = airport.findAvailableGate();
+
+        if (gate != null) {
+
+            gate.assignPlane(this);
+
+            setAssignedGate(gate);
+
+            System.out.println(
+                    "Plane "
+                            + planeId
+                            + " assigned to Gate "
+                            + gate.getGateId());
+
+        } else {
+
+            System.out.println(
+                    "No gate available for Plane "
+                            + planeId);
+
+        }
     }
 }

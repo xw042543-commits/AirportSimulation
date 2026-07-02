@@ -12,9 +12,9 @@ public class Main {
 
         ATC atc = new ATC(airport.getRunway());
 
-        Plane plane1 = new Plane(1, 120, atc);
-        Plane plane2 = new Plane(2, 90, atc);
-        Plane plane3 = new Plane(3, 150, atc);
+        Plane plane1 = new Plane(1, 120, atc,airport);
+        Plane plane2 = new Plane(2, 90, atc,airport);
+        Plane plane3 = new Plane(3, 150, atc,airport);
 
         plane1.start();
         plane2.start();

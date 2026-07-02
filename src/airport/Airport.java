@@ -24,4 +24,13 @@ public class Airport {
     public FuelTruck getFuelTruck(){
         return fuelTruck;
     }
+    public synchronized Gate findAvailableGate(){
+        for (Gate gate : gates){
+            if (gate.isAvailable()){
+                return gate;
+            }
+        }
+        return null;
+    }
+
 }

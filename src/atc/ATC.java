@@ -26,7 +26,7 @@ public class ATC {
                 return;
             }
         }
-        System.out.println("ATC approved landing for Plane" + plane.getPlaneId());
+        System.out.println("ATC approved landing for Plane " + plane.getPlaneId());
 
         runway.occupy(plane);
     }
