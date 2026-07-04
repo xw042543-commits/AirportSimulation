@@ -3,6 +3,7 @@ package aircraft;
 import airport.Airport;
 import airport.Gate;
 import atc.ATC;
+import airport.FuelTruck;
 
 public class Plane extends Thread{
     private final ATC atc;
@@ -41,7 +42,7 @@ public class Plane extends Thread{
         Thread.currentThread().interrupt();
     }
     atc.releaseRunway();
-        Gate gate = airport.findAvailableGate();
+    Gate gate = airport.findAvailableGate();
 
         if (gate != null) {
 
@@ -55,6 +56,25 @@ public class Plane extends Thread{
                             + " assigned to Gate "
                             + gate.getGateId());
 
+            System.out.println("Passengers are disembarking from Plane " + planeId);
+
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+            airport.getFuelTruck().refuel(this);
+
+            System.out.println("Passengers are boarding Plane " + planeId);
+
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+
+            System.out.println("Passengers have boarded Plane " + planeId);
+
         } else {
 
             System.out.println(
@@ -62,5 +82,6 @@ public class Plane extends Thread{
                             + planeId);
 
         }
+
     }
 }
