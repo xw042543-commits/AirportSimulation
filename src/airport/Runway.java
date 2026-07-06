@@ -1,6 +1,7 @@
 package airport;
 
 import aircraft.Plane;
+import util.Logger;
 
 public class Runway {
 
@@ -14,7 +15,7 @@ public class Runway {
 
         currentPlane = plane;
 
-        System.out.println(
+        Logger.log(
                 "Runway occupied by Plane "
                         + plane.getPlaneId());
 
@@ -22,7 +23,7 @@ public class Runway {
 
     public synchronized void release() {
 
-        System.out.println(
+        Logger.log(
                 "Runway released.");
 
         currentPlane = null;

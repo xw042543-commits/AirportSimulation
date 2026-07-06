@@ -6,7 +6,7 @@ import atc.ATC;
 
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
 
         Airport airport = new Airport();
 
@@ -19,5 +19,11 @@ public class Main {
         plane1.start();
         plane2.start();
         plane3.start();
+
+        plane1.join();
+        plane2.join();
+        plane3.join();
+
+        airport.getStatistics().printReport();
     }
 }

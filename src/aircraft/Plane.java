@@ -3,7 +3,10 @@ package aircraft;
 import airport.Airport;
 import airport.Gate;
 import atc.ATC;
-import airport.FuelTruck;
+import passenger.Passenger;
+import util.Logger;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Plane extends Thread{
     private final ATC atc;
@@ -11,12 +14,17 @@ public class Plane extends Thread{
     private final int passengerCount;
     private Gate assignedGate;
     private final Airport airport;
+    private final List<Passenger> passengers;
 
     public Plane(int planeId, int passengerCount, ATC atc, Airport airport) {
         this.planeId = planeId;
         this.passengerCount  = passengerCount;
         this.atc = atc;
         this.airport = airport;
+        this.passengers = new ArrayList<>();
+        for (int i = 1; i <= passengerCount; i++) {
+            passengers.add(new Passenger(i));
+        }
     }
     public int getPlaneId(){
         return planeId;
@@ -33,8 +41,8 @@ public class Plane extends Thread{
 
     @Override
     public void run(){
-        System.out.println("Plane " + planeId + " arrived at the airport.");
-        System.out.println("Plane " + planeId + " is requesting landing");
+        Logger.log("Plane " + planeId + " arrived at the airport.");
+        Logger.log("Plane " + planeId + " is requesting landing");
         atc.requestLanding(this);
     try {
         Thread.sleep(3000);
@@ -50,13 +58,18 @@ public class Plane extends Thread{
 
             setAssignedGate(gate);
 
-            System.out.println(
+            Logger.log(
                     "Plane "
                             + planeId
                             + " assigned to Gate "
                             + gate.getGateId());
 
-            System.out.println("Passengers are disembarking from Plane " + planeId);
+            airport.getStatistics().recordLanding(passengerCount);
+
+            Logger.log("Passengers are disembarking from Plane " + planeId);
+            for (Passenger p : passengers) {
+                p.disembark();
+            }
 
             try {
                 Thread.sleep(2000);
@@ -65,7 +78,10 @@ public class Plane extends Thread{
             }
             airport.getFuelTruck().refuel(this);
 
-            System.out.println("Passengers are boarding Plane " + planeId);
+            Logger.log("Passengers are boarding Plane " + planeId);
+            for (Passenger p : passengers) {
+                p.board();
+            }
 
             try {
                 Thread.sleep(2000);
@@ -73,11 +89,28 @@ public class Plane extends Thread{
                 Thread.currentThread().interrupt();
             }
 
-            System.out.println("Passengers have boarded Plane " + planeId);
+            Logger.log("Passengers have boarded Plane " + planeId);
+
+            Logger.log("Plane " + planeId + " is requesting takeoff.");
+
+            atc.requestTakeoff(this);
+
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+
+            Logger.log("Plane " + planeId + " has taken off successfully.");
+
+            airport.getStatistics().recordTakeoff();
+
+            atc.releaseRunway();
+            gate.releasePlane();
 
         } else {
 
-            System.out.println(
+            Logger.log(
                     "No gate available for Plane "
                             + planeId);
 
