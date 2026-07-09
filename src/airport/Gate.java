@@ -11,19 +11,19 @@ public class Gate {
     public Gate(int gateId){
         this.gateId = gateId;
     }
-    public boolean isAvailable() {
+    public synchronized boolean isAvailable() {
         return currentPlane == null;
     }
     public int getGateId() {
         return gateId;
     }
-    public void assignPlane(Plane plane) {
+    public synchronized void assignPlane(Plane plane) {
         currentPlane =plane;
     }
-    public void releasePlane() {
+    public synchronized void releasePlane() {
         currentPlane = null;
     }
-    public Plane getCurrentPlane() {
+    public synchronized Plane getCurrentPlane() {
         return currentPlane;
     }
 }
